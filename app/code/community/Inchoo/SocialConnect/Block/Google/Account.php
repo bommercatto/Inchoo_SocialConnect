@@ -96,7 +96,7 @@ class Inchoo_SocialConnect_Block_Google_Account extends Mage_Core_Block_Template
     protected function _getGender()
     {
         if(!empty($this->userInfo->gender)) {
-            return ucfirst($this->userInfo->gender);
+            return Mage::helper('core')->__(ucfirst($this->userInfo->gender));
         }
 
         return null;
@@ -105,17 +105,12 @@ class Inchoo_SocialConnect_Block_Google_Account extends Mage_Core_Block_Template
     protected function _getBirthday()
     {
         if(!empty($this->userInfo->birthday)) {
-            if((strpos($this->userInfo->birthday, '0000')) === false) {
-                $birthday = date('F j, Y', strtotime($this->userInfo->birthday));
+            $birthday = $this->userInfo->birthday . ' 12:00:00';
+            if((strpos($birthday, '0000')) === false) {
+                $birthday = ucfirst(Mage::helper('core')->formatDate($birthday, 'long', false));
             } else {
-                $birthday = date(
-                    'F j',
-                    strtotime(
-                        str_replace('0000', '1970', $this->userInfo->birthday)
-                    )
-                );
+                $birthday = ucfirst(Mage::helper('core')->formatDate(str_replace('0000', '1970', $birthday), 'short', false));
             }
-
             return $birthday;
         }
 

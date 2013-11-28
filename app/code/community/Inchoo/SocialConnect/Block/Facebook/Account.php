@@ -95,7 +95,7 @@ class Inchoo_SocialConnect_Block_Facebook_Account extends Mage_Core_Block_Templa
     protected function _getGender()
     {
         if(!empty($this->userInfo->gender)) {
-            return ucfirst($this->userInfo->gender);
+            return Mage::helper('core')->__(ucfirst($this->userInfo->gender));
         }
 
         return null;
@@ -104,7 +104,8 @@ class Inchoo_SocialConnect_Block_Facebook_Account extends Mage_Core_Block_Templa
     protected function _getBirthday()
     {
         if(!empty($this->userInfo->birthday)) {
-            $birthday = date('F j, Y', strtotime($this->userInfo->birthday));
+            $birthday = $this->userInfo->birthday . ' 12:00:00';
+            $birthday = ucfirst(Mage::helper('core')->formatDate($birthday, 'long', false));
             return $birthday;
         }
 
